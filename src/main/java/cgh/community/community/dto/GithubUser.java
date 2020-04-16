@@ -1,5 +1,9 @@
 package cgh.community.community.dto;
 
+/**
+ * github用户类
+ */
+
 public class GithubUser {
     private String name;
     private Long id;
