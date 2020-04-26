@@ -12,7 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
+ * 主页接口
  */
 @Controller
 public class IndexController {
@@ -20,6 +20,11 @@ public class IndexController {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 主页
+     * @param request
+     * @return
+     */
     @GetMapping("/")
     public String index(HttpServletRequest request){
         //从请求中拿出cookie

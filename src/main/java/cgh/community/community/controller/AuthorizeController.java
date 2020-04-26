@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+
+/**
+ * github授权登录接口
+ */
 @Controller
 public class AuthorizeController {
 
@@ -54,7 +58,7 @@ public class AuthorizeController {
         //获取github用户信息
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
-        if (githubUser != null){
+        if (githubUser != null && githubUser.getId() != null){
             //设置用户信息并存入数据库
             User user = new User();
             String token = UUID.randomUUID().toString();    //创建一个token
