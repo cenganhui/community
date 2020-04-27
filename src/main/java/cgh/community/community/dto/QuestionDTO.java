@@ -1,12 +1,13 @@
-package cgh.community.community.model;
+package cgh.community.community.dto;
 
+import cgh.community.community.model.User;
 import lombok.Data;
 
 /**
- * 问题类
+ * 问题DTO类
  */
 @Data
-public class Question {
+public class QuestionDTO {
     private Integer id;
     private String title;
     private String description;
@@ -17,4 +18,6 @@ public class Question {
     private Integer viewCount;
     private Integer commentCount;
     private Integer likeCount;
+
+    private User user;
 }

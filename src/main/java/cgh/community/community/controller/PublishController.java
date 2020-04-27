@@ -73,17 +73,19 @@ public class PublishController {
         User user = null;
         //从请求中拿出cookie
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            //找到cookie中的token
-            if(cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                //根据token去数据库中找相应用户
-                user = userMapper.findByToken(token);
-                //若用户存在，则将用户设置进session中
-                if(user != null){
-                    request.getSession().setAttribute("user",user);
+        if(cookies != null && cookies.length != 0) {
+            for (Cookie cookie : cookies) {
+                //找到cookie中的token
+                if (cookie.getName().equals("token")) {
+                    String token = cookie.getValue();
+                    //根据token去数据库中找相应用户
+                    user = userMapper.findByToken(token);
+                    //若用户存在，则将用户设置进session中
+                    if (user != null) {
+                        request.getSession().setAttribute("user", user);
+                    }
+                    break;
                 }
-                break;
             }
         }
         if(user == null){   //用户没登录
