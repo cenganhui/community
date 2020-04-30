@@ -1,5 +1,6 @@
 package cgh.community.community.controller;
 
+import cgh.community.community.dto.PaginationDTO;
 import cgh.community.community.dto.QuestionDTO;
 import cgh.community.community.mapper.QuestionMapper;
 import cgh.community.community.mapper.UserMapper;
@@ -31,11 +32,16 @@ public class IndexController {
     /**
      * 主页
      * @param request
+     * @param model
+     * @param page  当前页号
+     * @param size  当前页的问题数量
      * @return
      */
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model){
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size){
         //从请求中拿出cookie
         Cookie[] cookies = request.getCookies();
         if(cookies != null && cookies.length != 0) {
@@ -53,10 +59,9 @@ public class IndexController {
                 }
             }
         }
-        //获取问题List并加入model
-        List<QuestionDTO> questionList = questionService.list();
-        model.addAttribute("questionList",questionList);
-        //System.out.println("**************************");
+        //根据页号和分页数，获取分页问题DTO并加入model
+        PaginationDTO paginationDTO = questionService.list(page,size);
+        model.addAttribute("paginationDTO",paginationDTO);
         return "index";
     }
 }
