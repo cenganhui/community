@@ -1,7 +1,6 @@
 package cgh.community.community.controller;
 
 import cgh.community.community.mapper.QuestionMapper;
-import cgh.community.community.mapper.UserMapper;
 import cgh.community.community.model.Question;
 import cgh.community.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,9 +19,6 @@ public class PublishController {
 
     @Autowired
     private QuestionMapper questionMapper;
-
-    @Autowired
-    private UserMapper userMapper;
 
     /**
      * 发布页
@@ -70,24 +64,7 @@ public class PublishController {
         }
 
         //验证登录
-        User user = null;
-        //从请求中拿出cookie
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                //找到cookie中的token
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    //根据token去数据库中找相应用户
-                    user = userMapper.findByToken(token);
-                    //若用户存在，则将用户设置进session中
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
+        User user = (User)request.getSession().getAttribute("user");
         if(user == null){   //用户没登录
             model.addAttribute("error","用户未登陆");
             return "publish";
