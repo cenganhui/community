@@ -1,10 +1,7 @@
 package cgh.community.community.mapper;
 
 import cgh.community.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -54,4 +51,19 @@ public interface QuestionMapper {
      */
     @Select("SELECT COUNT(1) FROM question WHERE creator=#{userId}")
     Integer countByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 根据问题id查询问题
+     * @param id
+     * @return
+     */
+    @Select("SELECT * FROM question WHERE id=#{id}")
+    Question getById(@Param("id") Integer id);
+
+    /**
+     * 根据问题修改问题
+     * @param question
+     */
+    @Update("UPDATE question SET title=#{title},description=#{description},gmt_modified=#{gmtModified},tag=#{tag} WHERE id=#{id}")
+    void update(Question question);
 }

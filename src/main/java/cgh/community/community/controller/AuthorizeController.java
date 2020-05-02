@@ -5,6 +5,7 @@ import cgh.community.community.dto.GithubUser;
 import cgh.community.community.mapper.UserMapper;
 import cgh.community.community.model.User;
 import cgh.community.community.provider.GithubProvider;
+import cgh.community.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     /**
      * github登录授权的回调
@@ -65,19 +66,34 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             //将token存入cookie中，并响应回去
             response.addCookie(new Cookie("token",token));
-
             return "redirect:/";
         }
         else{
             //登录失败，重新登录
             return "redirect:/";
         }
+    }
+
+    /**
+     * 用户登出
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping("/logout")
+    public String Logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        //删除用户session
+        request.getSession().removeAttribute("user");
+        //设置token为空
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 
 }

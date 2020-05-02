@@ -1,10 +1,7 @@
 package cgh.community.community.mapper;
 
 import cgh.community.community.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
 @Mapper
@@ -31,4 +28,19 @@ public interface UserMapper {
      */
     @Select("SELECT * FROM user WHERE id=#{id}")
     User findById(@Param("id") Integer id);
+
+    /**
+     * 根据accountId查询用户
+     * @param accountId
+     * @return
+     */
+    @Select("SELECT * FROM user WHERE account_id=#{accountId}")
+    User findByAccountId(@Param("accountId") String accountId);
+
+    /**
+     * 根据ddUser更新用户
+     * @param ddUser
+     */
+    @Update("UPDATE user SET name=#{name},token=#{token},gmt_modified=#{gmtModified},avatar_url=#{avatarUrl} WHERE id=#{id}")
+    void update(User ddUser);
 }

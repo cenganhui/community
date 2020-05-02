@@ -120,4 +120,39 @@ public class QuestionService {
         //返回分页问题DTO
         return paginationDTO;
     }
+
+    /**
+     * 根据问题id获得问题DTO
+     * @param id
+     * @return
+     */
+    public QuestionDTO getById(Integer id) {
+        //通过问题id查询到问题
+        Question question = questionMapper.getById(id);
+        //通过问题的创建用户id查询到用户对象
+        User user = userMapper.findById(question.getCreator());
+        //创建一个问题DTO
+        QuestionDTO questionDTO = new QuestionDTO();
+        //工具类，将question对象中的属性复制到questionDTO对象中
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+
+        return questionDTO;
+    }
+
+    /**
+     * 通过问题来创建或更新问题
+     * @param question
+     */
+    public void createOrUpdate(Question question) {
+        if(question.getId() == null){   //问题为空则创建
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        }
+        else{   //否则更新
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.update(question);
+        }
+    }
 }
