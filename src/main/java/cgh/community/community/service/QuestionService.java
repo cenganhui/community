@@ -2,6 +2,9 @@ package cgh.community.community.service;
 
 import cgh.community.community.dto.PaginationDTO;
 import cgh.community.community.dto.QuestionDTO;
+import cgh.community.community.exception.CustomizeErrorCode;
+import cgh.community.community.exception.CustomizeException;
+import cgh.community.community.mapper.QuestionExtMapper;
 import cgh.community.community.mapper.QuestionMapper;
 import cgh.community.community.mapper.UserMapper;
 import cgh.community.community.model.Question;
@@ -20,6 +23,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -140,6 +146,9 @@ public class QuestionService {
     public QuestionDTO getById(Integer id) {
         //通过问题id查询到问题
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         //通过问题的创建用户id查询到用户对象
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         //创建一个问题DTO
@@ -159,6 +168,9 @@ public class QuestionService {
         if(question.getId() == null){   //问题为空则创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setCommentCount(0);
+            question.setLikeCount(0);
             questionMapper.insert(question);
         }
         else{   //否则更新
@@ -170,7 +182,21 @@ public class QuestionService {
 
             QuestionExample questionExample = new QuestionExample();
             questionExample.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion,new QuestionExample());
+            int updated = questionMapper.updateByExampleSelective(updateQuestion,new QuestionExample());
+            if(updated != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
+    }
+
+    /**
+     * 根据问题id递增问题的阅读数
+     * @param id
+     */
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
