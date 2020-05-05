@@ -18,4 +18,6 @@ public interface QuestionExtMapper {
      * @return
      */
     int incView(Question question);
+
+    int incCommentCount(Question question);
 }
