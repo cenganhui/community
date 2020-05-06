@@ -10,6 +10,7 @@ import cgh.community.community.model.Comment;
 import cgh.community.community.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Akuma
@@ -31,6 +32,7 @@ public class CommentService {
      * 添加一条评论
      * @param comment
      */
+    @Transactional
     public void insert(Comment comment) {
         //判断评论的父类id是否存在
         if(comment.getParentId() == null || comment.getParentId() == 0){
