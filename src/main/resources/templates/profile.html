@@ -16,11 +16,12 @@
 <!--问题列表-->
 <div class="container-fluid main profile">
     <div class="row">
+<!--        左边部分-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
 
-            <!--            循环显示问题-->
+<!--        循环显示问题-->
             <div class="media" th:each="question : ${paginationDTO.questionList}">
                 <div class="media-left">
                     <a href="#">
@@ -74,6 +75,7 @@
             </nav>
 
         </div>
+<!--        右边部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="list-group section">
                 <a href="/profile/questions" th:class="${section == 'questions'} ? 'list-group-item active' : 'list-group-item'">我的问题</a>

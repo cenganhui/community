@@ -17,8 +17,10 @@
 <!--问题详情-->
 <div class="container-fluid main profile">
     <div class="row">
+<!--        左边部分-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<!--            问题正文-->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px">
                 <h3><span th:text="${questionDTO.title}"></span></h3>
 
                 <span class="text-desc">
@@ -37,6 +39,37 @@
                 <br>
                 <hr>
             </div>
+            <!--回复-->
+            <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <span th:text="${questionDTO.commentCount}"></span> 个回复
+                <br>
+                <hr style="margin-top: 10px">
+            </h4>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:each="commentDTO : ${commentDTOList}">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${commentDTO.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                            <span th:text="${commentDTO.user.name}"></span>
+                        </h5>
+                        <div th:text="${commentDTO.content}"></div>
+                        <div class="menu">
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                            <span class="glyphicon glyphicon-comment icon"></span>
+                            <span class="pull-right" th:text="${#dates.format(commentDTO.gmtCreate,'yyyy-MM-dd')}"></span>
+                        </div>
+                    </div>
+                </div>
+                <br style="margin-top: 0">
+                <hr style="margin-top: 0">
+            </div>
+
+<!--回复输入-->
 <!--            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
             <div id="comment_section" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="media">
@@ -58,6 +91,7 @@
 
 
         </div>
+<!--        右边部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <h3>发起人</h3>

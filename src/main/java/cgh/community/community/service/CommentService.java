@@ -1,16 +1,24 @@
 package cgh.community.community.service;
 
+import cgh.community.community.dto.CommentDTO;
 import cgh.community.community.enums.CommentTypeEnum;
 import cgh.community.community.exception.CustomizeErrorCode;
 import cgh.community.community.exception.CustomizeException;
 import cgh.community.community.mapper.CommentMapper;
 import cgh.community.community.mapper.QuestionExtMapper;
 import cgh.community.community.mapper.QuestionMapper;
-import cgh.community.community.model.Comment;
-import cgh.community.community.model.Question;
+import cgh.community.community.mapper.UserMapper;
+import cgh.community.community.model.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Akuma
@@ -27,6 +35,9 @@ public class CommentService {
 
     @Autowired
     private QuestionExtMapper questionExtMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 添加一条评论
@@ -63,5 +74,39 @@ public class CommentService {
             commentMapper.insert(comment);
             questionExtMapper.incCommentCount(dbQuestion);
         }
+    }
+
+    /**
+     * 根据问题id获取评论DTO列表
+     * @param id
+     * @return
+     */
+    public List<CommentDTO> listByQuestionId(Long id) {
+        //获取到评论列表
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        List<Comment> comments = commentMapper.selectByExample(commentExample);
+        //判断评论列表是否为空
+        if(comments.size() == 0){
+            return new ArrayList<>();
+        }
+        //获取去重的评论人
+        Set<Long> commentators = comments.stream().map(comment -> comment.getCommentator()).collect(Collectors.toSet());
+        List<Long> userIds = new ArrayList<>();
+        userIds.addAll(commentators);
+        //获取评论人并转成userMap
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andIdIn(userIds);
+        List<User> users = userMapper.selectByExample(userExample);
+        Map<Long,User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(),user -> user));
+        //将comment转成commentDTO
+        List<CommentDTO> commentDTOList = comments.stream().map(comment -> {
+            CommentDTO commentDTO = new CommentDTO();
+            BeanUtils.copyProperties(comment,commentDTO);
+            commentDTO.setUser(userMap.get(comment.getCommentator()));
+            return commentDTO;
+        }).collect(Collectors.toList());
+        //返回评论DTO列表
+        return commentDTOList;
     }
 }

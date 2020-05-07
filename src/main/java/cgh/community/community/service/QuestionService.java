@@ -58,8 +58,10 @@ public class QuestionService {
 
         //计算页面偏移，根据偏移和分页数量查询出当前分页的问题list
         Integer offset = size * (page -1);
-
-        List<Question> questionList = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        //问题list按创建时间倒序排列
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> questionList = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample,new RowBounds(offset,size));
 
         //创建问题DTO list
         List<QuestionDTO> questionDTOList = new ArrayList<>();

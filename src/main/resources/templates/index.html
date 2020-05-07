@@ -9,6 +9,16 @@
     <script src="js/jquery-3.5.0.js" type="application/javascript"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
+<!--中途登录，登录成功后关闭此页-->
+<script type="application/javascript">
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if(closable == "true"){
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 <!--引入导航-->
 <div th:insert="~{navigation :: nav}"></div>
@@ -16,6 +26,7 @@
 <!--问题列表-->
 <div class="container-fluid main">
     <div class="row">
+<!--        左边部分-->
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 发现</h2>
             <hr>
@@ -73,8 +84,8 @@
 
                 </ul>
             </nav>
-
         </div>
+<!--    右边部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>热门话题</h3>
         </div>
