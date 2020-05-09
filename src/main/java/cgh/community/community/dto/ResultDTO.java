@@ -10,13 +10,15 @@ import lombok.Data;
  * @date 2020/5/5 15:09
  */
 @Data
-public class ResultDTO {
+public class ResultDTO<T> {
     private Integer code;
     private String message;
+    private T data;
 
-    public ResultDTO(Integer code, String message) {
+    public ResultDTO(Integer code, String message, T data) {
         this.code = code;
         this.message = message;
+        this.data = data;
     }
 
     /**
@@ -25,7 +27,7 @@ public class ResultDTO {
      * @return
      */
     public static ResultDTO errorOf(CustomizeErrorCode customizeErrorCode) {
-        return new ResultDTO(customizeErrorCode.getCode(),customizeErrorCode.getMessage());
+        return new ResultDTO(customizeErrorCode.getCode(),customizeErrorCode.getMessage(),null);
     }
 
     /**
@@ -34,7 +36,7 @@ public class ResultDTO {
      * @return
      */
     public static ResultDTO errorOf(CustomizeException e) {
-        return new ResultDTO(e.getCode(),e.getMessage());
+        return new ResultDTO(e.getCode(),e.getMessage(),null);
     }
 
     /**
@@ -42,8 +44,17 @@ public class ResultDTO {
      * @return
      */
     public static ResultDTO okOf() {
-        return new ResultDTO(200,"ok");
+        return new ResultDTO(200,"ok",null);
     }
 
+    /**
+     * 返回成功结果DTO
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public static <T> ResultDTO okOf(T t) {
+        return new ResultDTO(200,"ok",t);
+    }
 
 }

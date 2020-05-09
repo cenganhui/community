@@ -1,7 +1,9 @@
 package cgh.community.community.controller;
 
 import cgh.community.community.dto.CommentCreateDTO;
+import cgh.community.community.dto.CommentDTO;
 import cgh.community.community.dto.ResultDTO;
+import cgh.community.community.enums.CommentTypeEnum;
 import cgh.community.community.exception.CustomizeErrorCode;
 import cgh.community.community.model.Comment;
 import cgh.community.community.model.User;
@@ -9,12 +11,10 @@ import cgh.community.community.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 评论接口
@@ -59,5 +59,17 @@ public class CommentController {
         commentService.insert(comment);
         //返回ok
         return ResultDTO.okOf();
+    }
+
+    /**
+     * 二级评论
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
+    public ResultDTO<List> comments(@PathVariable(name = "id") Long id){
+        List<CommentDTO> commentDTOList = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.okOf(commentDTOList);
     }
 }

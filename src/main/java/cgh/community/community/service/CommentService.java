@@ -77,14 +77,15 @@ public class CommentService {
     }
 
     /**
-     * 根据问题id获取评论DTO列表
+     * 根据问题id和评论类型获取评论DTO列表
      * @param id
+     * @param type
      * @return
      */
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
         //获取到评论列表
         CommentExample commentExample = new CommentExample();
-        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        commentExample.createCriteria().andParentIdEqualTo(id).andTypeEqualTo(type.getType());
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         //判断评论列表是否为空
         if(comments.size() == 0){

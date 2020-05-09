@@ -1,8 +1,8 @@
 package cgh.community.community.controller;
 
-import cgh.community.community.dto.CommentCreateDTO;
 import cgh.community.community.dto.CommentDTO;
 import cgh.community.community.dto.QuestionDTO;
+import cgh.community.community.enums.CommentTypeEnum;
 import cgh.community.community.service.CommentService;
 import cgh.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class QuestionController {
         //获得问题DTO
         QuestionDTO questionDTO = questionService.getById(id);
         //获得评论DTO列表
-        List<CommentDTO> commentDTOList = commentService.listByQuestionId(id);
+        List<CommentDTO> commentDTOList = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
         //累加阅读数
         questionService.incView(id);
