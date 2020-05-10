@@ -18,6 +18,14 @@ public class QuestionDTO {
     private Integer viewCount;  //浏览数
     private Integer commentCount;   //评论数
     private Integer likeCount;  //点赞数
+    private String[] tags;
 
     private User user;  //用户
+
+    /**
+     * 以,分割标签
+     */
+    public void cutTag(){
+        tags = tag.split(",");
+    }
 }

@@ -26,5 +26,9 @@
     COMMENT_COUNT = COMMENT_COUNT + #{commentCount}
     where id=#{id}
   </update>
-
+  <select id="selectRelated" parameterType="cgh.community.community.model.Question" resultMap="BaseResultMap">
+    select *
+    from QUESTION
+    where id != #{id} and tag regexp #{tag}
+  </select>
 </mapper>

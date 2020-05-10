@@ -10,6 +10,7 @@ import cgh.community.community.mapper.UserMapper;
 import cgh.community.community.model.Question;
 import cgh.community.community.model.QuestionExample;
 import cgh.community.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -74,6 +76,7 @@ public class QuestionService {
             //工具类，将question对象中的属性复制到questionDTO对象中
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
+            //questionDTO.cutTag();
             //将问题DTO加入到问题DTO list中
             questionDTOList.add(questionDTO);
         }
@@ -131,6 +134,7 @@ public class QuestionService {
             //工具类，将question对象中的属性复制到questionDTO对象中
             BeanUtils.copyProperties(question,questionDTO);
             questionDTO.setUser(user);
+            //questionDTO.cutTag();
             //将问题DTO加入到问题DTO list中
             questionDTOList.add(questionDTO);
         }
@@ -158,7 +162,8 @@ public class QuestionService {
         //工具类，将question对象中的属性复制到questionDTO对象中
         BeanUtils.copyProperties(question,questionDTO);
         questionDTO.setUser(user);
-
+        //分割标签
+        questionDTO.cutTag();
         return questionDTO;
     }
 
@@ -200,5 +205,25 @@ public class QuestionService {
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        if(StringUtils.isBlank(queryDTO.getTag())){
+            return new ArrayList<>();
+        }
+        else{
+            String tag = queryDTO.getTag().replace(",","|");
+            Question question = new Question();
+            question.setId(queryDTO.getId());
+            question.setTag(tag);
+            List<Question> questionList = questionExtMapper.selectRelated(question);
+            List<QuestionDTO> questionDTOList = questionList.stream().map(q -> {
+                QuestionDTO questionDTO = new QuestionDTO();
+                BeanUtils.copyProperties(q,questionDTO);
+                return questionDTO;
+            }).collect(Collectors.toList());
+
+            return questionDTOList;
+        }
     }
 }

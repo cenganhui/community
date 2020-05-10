@@ -4,10 +4,7 @@ import cgh.community.community.dto.CommentDTO;
 import cgh.community.community.enums.CommentTypeEnum;
 import cgh.community.community.exception.CustomizeErrorCode;
 import cgh.community.community.exception.CustomizeException;
-import cgh.community.community.mapper.CommentMapper;
-import cgh.community.community.mapper.QuestionExtMapper;
-import cgh.community.community.mapper.QuestionMapper;
-import cgh.community.community.mapper.UserMapper;
+import cgh.community.community.mapper.*;
 import cgh.community.community.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,9 @@ public class CommentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private CommentExtMapper commentExtMapper;
+
     /**
      * 添加一条评论
      * @param comment
@@ -61,6 +61,9 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //回复评论时给评论的评论数+1
+            dbComment.setCommentCount(1);
+            commentExtMapper.incCommentCount(dbComment);
         }
         //判断评论的类型是否是问题
         else{

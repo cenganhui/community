@@ -48,9 +48,20 @@ body{
     font-size: 16px;
     cursor: pointer;
 }
+.menu .icon2{
+    font-size: 16px;
+    cursor: pointer;
+}
 .menu .active{
     color: #499ef3;
 }
 .menu .icon:hover{
     color: #499ef3;
+}
+.question-related{
+    line-height: 25px;
+    font-size: 15px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
 }
