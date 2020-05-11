@@ -1,10 +1,12 @@
 package cgh.community.community.controller;
 
+import cgh.community.community.cache.TagCache;
 import cgh.community.community.dto.QuestionDTO;
 import cgh.community.community.mapper.QuestionMapper;
 import cgh.community.community.model.Question;
 import cgh.community.community.model.User;
 import cgh.community.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,17 +41,17 @@ public class PublishController {
         model.addAttribute("description",question.getDescription());
         model.addAttribute("tag",question.getTag());
         model.addAttribute("id",question.getId());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
-
-
 
     /**
      * 发布页
      * @return
      */
     @GetMapping("/publish")
-    public String publish(){
+    public String publish(Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -74,6 +76,7 @@ public class PublishController {
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
+        model.addAttribute("tags", TagCache.get());
         //判断问题内容是否为空，若为空，则跳会publish页面，并提示，将已填写的内容回显
         if(title == null || title == ""){
             model.addAttribute("error","标题不能为空！");
@@ -85,6 +88,12 @@ public class PublishController {
         }
         if(tag == null || tag == ""){
             model.addAttribute("error","标签不能为空！");
+            return "publish";
+        }
+        //验证便签是否合法
+        String invalid = TagCache.filterInvalid(tag);
+        if(StringUtils.isNoneBlank(invalid)){
+            model.addAttribute("error","输入非法标签：" + invalid);
             return "publish";
         }
 

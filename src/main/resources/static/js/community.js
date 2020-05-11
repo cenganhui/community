@@ -153,3 +153,27 @@ function collapseComments(e) {
     }
     console.log(id);
 }
+
+/**
+ * 选择标签，加入到标签输入框中
+ * @param e
+ */
+function selectTag(e) {
+    var value = e.getAttribute("data-tag");
+    var previous =  $("#tag").val();
+    if(previous.indexOf(value) == -1){
+        if(previous){
+            $("#tag").val(previous + ',' + value);
+        }
+        else{
+            $("#tag").val(value);
+        }
+    }
+}
+
+/**
+ * 点击输入标签框，显示标签选项
+ */
+function showSelectTag() {
+    $("#select-tag").show();
+}
