@@ -39,7 +39,7 @@ public class QuestionService {
      * @return
      */
     public PaginationDTO list(Integer page, Integer size) {
-        PaginationDTO paginationDTO = new PaginationDTO();  //创建分页问题DTO
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();  //创建分页内容DTO
         Integer totalPage;
         Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());    //获得问题总数
 
@@ -80,8 +80,8 @@ public class QuestionService {
             //将问题DTO加入到问题DTO list中
             questionDTOList.add(questionDTO);
         }
-        //将问题DTO list注入进分页问题DTO中
-        paginationDTO.setQuestionList(questionDTOList);
+        //将问题DTO list注入进分页内容DTO中
+        paginationDTO.setData(questionDTOList);
         //返回分页问题DTO
         return paginationDTO;
     }
@@ -94,7 +94,7 @@ public class QuestionService {
      * @return
      */
     public PaginationDTO listByUserId(Long userId, Integer page, Integer size) {
-        PaginationDTO paginationDTO = new PaginationDTO();  //创建分页问题DTO
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();  //创建分页内容DTO
         Integer totalPage;
 
         QuestionExample questionExample = new QuestionExample();
@@ -121,6 +121,7 @@ public class QuestionService {
 
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
+        example.setOrderByClause("gmt_create desc");
         List<Question> questionList = questionMapper.selectByExampleWithBLOBsWithRowbounds(example,new RowBounds(offset,size));
 
         //创建问题DTO list
@@ -138,8 +139,8 @@ public class QuestionService {
             //将问题DTO加入到问题DTO list中
             questionDTOList.add(questionDTO);
         }
-        //将问题DTO list注入进分页问题DTO中
-        paginationDTO.setQuestionList(questionDTOList);
+        //将问题DTO list注入进分页内容DTO中
+        paginationDTO.setData(questionDTOList);
         //返回分页问题DTO
         return paginationDTO;
     }
@@ -189,7 +190,7 @@ public class QuestionService {
 
             QuestionExample questionExample = new QuestionExample();
             questionExample.createCriteria().andIdEqualTo(question.getId());
-            int updated = questionMapper.updateByExampleSelective(updateQuestion,new QuestionExample());
+            int updated = questionMapper.updateByExampleSelective(updateQuestion,questionExample);
             if(updated != 1){
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }

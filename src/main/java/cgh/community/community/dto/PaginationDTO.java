@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 分页问题DTO
+ * 分页内容DTO
  * @author Akuma
  * @date 2020/4/30 12:24
  */
 @Data
-public class PaginationDTO {
-    private List<QuestionDTO> questionList; //问题list
+public class PaginationDTO<T> {
+    private List<T> data; //数据list，可放各种DTO
     private boolean showPrevious;   //是否显示前一页
     private boolean showFirstPage;  //是否显示第一页
     private boolean showNext;   //是否显示下一页

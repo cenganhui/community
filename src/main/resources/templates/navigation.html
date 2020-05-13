@@ -34,6 +34,9 @@
                         <a href="/publish">发布问题</a>
                     </li>
 
+                    <li>
+                        <a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a>
+                    </li>
                     <!--若session中有用户信息-->
                     <li class="dropdown" th:if="${session.user != null}">
                         <!--显示用户名-->

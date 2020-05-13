@@ -2,6 +2,8 @@ package cgh.community.community.service;
 
 import cgh.community.community.dto.CommentDTO;
 import cgh.community.community.enums.CommentTypeEnum;
+import cgh.community.community.enums.NotificationStatusEnum;
+import cgh.community.community.enums.NotificationTypeEnum;
 import cgh.community.community.exception.CustomizeErrorCode;
 import cgh.community.community.exception.CustomizeException;
 import cgh.community.community.mapper.*;
@@ -39,12 +41,16 @@ public class CommentService {
     @Autowired
     private CommentExtMapper commentExtMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     /**
      * 添加一条评论
      * @param comment
+     * @param commentator
      */
     @Transactional
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User commentator) {
         //判断评论的父类id是否存在
         if(comment.getParentId() == null || comment.getParentId() == 0){
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -60,10 +66,20 @@ public class CommentService {
             if(dbComment == null){
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
+
+            //根据评论获取这个问题
+            Question dbQuestion = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if(dbQuestion == null){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
+            //插入新评论
             commentMapper.insert(comment);
             //回复评论时给评论的评论数+1
             dbComment.setCommentCount(1);
             commentExtMapper.incCommentCount(dbComment);
+
+            //创建通知
+            createNotify(comment,dbComment.getCommentator(),commentator.getName(),dbQuestion.getTitle(),NotificationTypeEnum.REPLY_COMMENT,dbQuestion.getId());
         }
         //判断评论的类型是否是问题
         else{
@@ -76,8 +92,38 @@ public class CommentService {
             dbQuestion.setCommentCount(1);
             commentMapper.insert(comment);
             questionExtMapper.incCommentCount(dbQuestion);
+
+            //创建通知
+            createNotify(comment,dbQuestion.getCreator(),commentator.getName(),dbQuestion.getTitle(),NotificationTypeEnum.REPLY_QUESTION,dbQuestion.getId());
+
         }
     }
+
+    /**
+     * 创建一个新通知
+     * @param comment   从comment获取通知者
+     * @param receiver  接收者
+     * @param notifierName  通知者name
+     * @param outerTitle    外部类title（问题的title）
+     * @param notificationTypeEnum  通知类型
+     * @param outerId   外部类id（评论id或者问题id）
+     */
+    private void createNotify(Comment comment,Long receiver,String notifierName,String outerTitle,NotificationTypeEnum notificationTypeEnum,Long outerId){
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+
+        notification.setOuterId(outerId);
+        notification.setNotifier(comment.getCommentator());
+        notification.setReceiver(receiver);
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setType(notificationTypeEnum.getType());
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
+
+        notificationMapper.insert(notification);
+    }
+
+
 
     /**
      * 根据问题id和评论类型获取评论DTO列表

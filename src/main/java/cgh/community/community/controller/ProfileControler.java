@@ -2,6 +2,7 @@ package cgh.community.community.controller;
 
 import cgh.community.community.dto.PaginationDTO;
 import cgh.community.community.model.User;
+import cgh.community.community.service.NotificationService;
 import cgh.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class ProfileControler {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     /**
      * 获取我的问题列表
      * @param request
@@ -43,18 +47,21 @@ public class ProfileControler {
         if(user == null){   //没有登录，则重定向到主页
             return "redirect:/";
         }
-
+        //如果选择了我的问题，则添加我的问题列表相关内容
         if("questions".equals(action)){
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
+            PaginationDTO paginationDTO = questionService.listByUserId(user.getId(),page,size);
+            model.addAttribute("paginationDTO",paginationDTO);
         }
+        //如果选择了最新通知，则添加最新通知列表相关内容
         else if("replies".equals(action)){
+
+            PaginationDTO paginationDTO = notificationService.list(user.getId(),page,size);
+            model.addAttribute("paginationDTO",paginationDTO);
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","最新回复");
         }
-
-        PaginationDTO paginationDTO = questionService.listByUserId(user.getId(),page,size);
-        model.addAttribute("paginationDTO",paginationDTO);
         return "profile";
     }
 }

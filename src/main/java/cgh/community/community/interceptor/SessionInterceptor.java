@@ -3,6 +3,7 @@ package cgh.community.community.interceptor;
 import cgh.community.community.mapper.UserMapper;
 import cgh.community.community.model.User;
 import cgh.community.community.model.UserExample;
+import cgh.community.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,6 +25,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从请求中拿出cookie
@@ -40,6 +44,9 @@ public class SessionInterceptor implements HandlerInterceptor {
                     //若用户存在，则将用户设置进session中
                     if (users.size() != 0) {
                         request.getSession().setAttribute("user", users.get(0));
+                        //获得未读通知数并传递
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unreadCount",unreadCount);
                     }
                     break;
                 }
