@@ -9,7 +9,8 @@
 - **Github OAuth**：https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/
 - **Bootstrap**：https://v3.bootcss.com/
 - **mvn repository**：https://mvnrepository.com/
-- **moment**:http://momentjs.cn/
+- **moment**：http://momentjs.cn/
+- **Editor.md**：https://github.com/pandao/editor.md
 
 ## 工具
 - **Git**：https://git-scm.com/download
