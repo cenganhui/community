@@ -2,6 +2,7 @@ package cgh.community.community.service;
 
 import cgh.community.community.dto.PaginationDTO;
 import cgh.community.community.dto.QuestionDTO;
+import cgh.community.community.dto.QuestionQueryDTO;
 import cgh.community.community.exception.CustomizeErrorCode;
 import cgh.community.community.exception.CustomizeException;
 import cgh.community.community.mapper.QuestionExtMapper;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +40,18 @@ public class QuestionService {
      * @param size  分页数量
      * @return
      */
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+        //分割搜索字符串
+        if(StringUtils.isNoneBlank(search)){
+            String[] tags = StringUtils.split(search," ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();  //创建分页内容DTO
         Integer totalPage;
-        Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());    //获得问题总数
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);    //获得问题总数
 
         if(totalCount % size == 0){
             totalPage = totalCount / size;
@@ -60,10 +70,10 @@ public class QuestionService {
 
         //计算页面偏移，根据偏移和分页数量查询出当前分页的问题list
         Integer offset = size * (page -1);
-        //问题list按创建时间倒序排列
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questionList = questionMapper.selectByExampleWithBLOBsWithRowbounds(questionExample,new RowBounds(offset,size));
+
+        questionQueryDTO.setPage(offset);
+        questionQueryDTO.setSize(size);
+        List<Question> questionList = questionExtMapper.selectBySearch(questionQueryDTO);
 
         //创建问题DTO list
         List<QuestionDTO> questionDTOList = new ArrayList<>();

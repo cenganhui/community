@@ -8,6 +8,7 @@ import cgh.community.community.exception.CustomizeErrorCode;
 import cgh.community.community.exception.CustomizeException;
 import cgh.community.community.mapper.*;
 import cgh.community.community.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @date 2020/5/5 15:22
  */
 @Service
+@Slf4j
 public class CommentService {
 
     @Autowired
@@ -53,10 +55,12 @@ public class CommentService {
     public void insert(Comment comment, User commentator) {
         //判断评论的父类id是否存在
         if(comment.getParentId() == null || comment.getParentId() == 0){
+            log.error("target param not found,{}",comment.getParentId());
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
         //判断评论的类型是否存在
         if(comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())){
+            log.error("type param wrong,{}",comment.getType());
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
         //判断评论的类型是否是评论
@@ -64,6 +68,7 @@ public class CommentService {
             //回复评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             if(dbComment == null){
+                log.error("comment not found,{}",dbComment);
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
 
@@ -86,6 +91,7 @@ public class CommentService {
             //回复问题
             Question dbQuestion = questionMapper.selectByPrimaryKey(comment.getParentId());
             if(dbQuestion == null){
+                log.error("question not found,{}",dbQuestion);
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
             //问题回复数+1
@@ -109,6 +115,9 @@ public class CommentService {
      * @param outerId   外部类id（评论id或者问题id）
      */
     private void createNotify(Comment comment,Long receiver,String notifierName,String outerTitle,NotificationTypeEnum notificationTypeEnum,Long outerId){
+        if(receiver == comment.getCommentator()){
+            return ;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
 

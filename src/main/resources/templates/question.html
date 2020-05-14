@@ -130,12 +130,13 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-rounded" th:src="${questionDTO.user.avatarUrl}">
+                            <img class="media-object img-rounded"
+                                 th:src="${session.user != null ? session.user.avatarUrl : '/images/default-avatar.png'}">
                         </a>
                     </div>
                     <div class="media-body">
                         <h5 class="media-heading">
-                            <span th:text="${questionDTO.user.name}"></span>
+                            <span th:text="${session.user != null ? session.user.name : '游客'}"></span>
                         </h5>
                     </div>
                 </div>
@@ -190,5 +191,8 @@
 
     </div>
 </div>
+
+<!--引入页尾-->
+<div th:insert="~{footer :: foot}"></div>
 </body>
 </html>

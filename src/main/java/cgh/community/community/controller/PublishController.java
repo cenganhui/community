@@ -6,6 +6,7 @@ import cgh.community.community.mapper.QuestionMapper;
 import cgh.community.community.model.Question;
 import cgh.community.community.model.User;
 import cgh.community.community.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * 发布接口
  */
 @Controller
+@Slf4j
 public class PublishController {
 
 
@@ -101,6 +103,7 @@ public class PublishController {
         User user = (User)request.getSession().getAttribute("user");
         if(user == null){   //用户没登录
             model.addAttribute("error","用户未登陆");
+            log.info("user must to login,{}",user);
             return "publish";
         }
         //登录成功，创建question，插入数据库，重定向到主页

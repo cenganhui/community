@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class IndexController {
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private QuestionService questionService;
 
     /**
@@ -32,10 +29,12 @@ public class IndexController {
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
-                        @RequestParam(name = "size",defaultValue = "5") Integer size){
+                        @RequestParam(name = "size",defaultValue = "5") Integer size,
+                        @RequestParam(name = "search",required = false) String search){
         //根据页号和分页数，获取分页问题DTO并加入model
-        PaginationDTO paginationDTO = questionService.list(page,size);
+        PaginationDTO paginationDTO = questionService.list(search,page,size);
         model.addAttribute("paginationDTO",paginationDTO);
+        model.addAttribute("search",search);
         return "index";
     }
 }

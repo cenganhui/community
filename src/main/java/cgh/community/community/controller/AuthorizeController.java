@@ -6,6 +6,7 @@ import cgh.community.community.mapper.UserMapper;
 import cgh.community.community.model.User;
 import cgh.community.community.provider.GithubProvider;
 import cgh.community.community.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import java.util.UUID;
  * github授权登录接口
  */
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Autowired
@@ -74,6 +76,7 @@ public class AuthorizeController {
         }
         else{
             //登录失败，重新登录
+            log.error("callback get github error,{}",githubUser);
             return "redirect:/";
         }
     }

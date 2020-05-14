@@ -1,5 +1,6 @@
 package cgh.community.community.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
+@Slf4j
 public class CustomizeErrorController implements ErrorController {
 
     @Override
@@ -35,9 +37,11 @@ public class CustomizeErrorController implements ErrorController {
         HttpStatus status = getStatus(request);
         if(status.is4xxClientError()){
             model.addAttribute("message","请求出错");
+            log.error("request error");
         }
         if(status.is5xxServerError()){
             model.addAttribute("message","稍等下吧");
+            log.error("server error");
         }
         return new ModelAndView("error");
     }

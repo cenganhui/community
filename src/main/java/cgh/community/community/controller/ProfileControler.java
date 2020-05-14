@@ -4,6 +4,7 @@ import cgh.community.community.dto.PaginationDTO;
 import cgh.community.community.model.User;
 import cgh.community.community.service.NotificationService;
 import cgh.community.community.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020/5/1 14:16
  */
 @Controller
+@Slf4j
 public class ProfileControler {
 
     @Autowired
@@ -45,6 +47,7 @@ public class ProfileControler {
         //判断登录
         User user = (User)request.getSession().getAttribute("user");
         if(user == null){   //没有登录，则重定向到主页
+            log.info("user must to login,{}",user);
             return "redirect:/";
         }
         //如果选择了我的问题，则添加我的问题列表相关内容

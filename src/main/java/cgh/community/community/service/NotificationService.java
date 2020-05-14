@@ -28,9 +28,6 @@ public class NotificationService {
     @Autowired
     private NotificationMapper notificationMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     /**
      * 根据用户id获取分页内容DTO
      * @param userId

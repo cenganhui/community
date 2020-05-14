@@ -4,6 +4,7 @@ import cgh.community.community.dto.NotificationDTO;
 import cgh.community.community.enums.NotificationTypeEnum;
 import cgh.community.community.model.User;
 import cgh.community.community.service.NotificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020/5/13 10:04
  */
 @Controller
+@Slf4j
 public class NotificationController {
 
     @Autowired
@@ -34,6 +36,7 @@ public class NotificationController {
         //获取当前用户
         User user = (User) request.getSession().getAttribute("user");
         if(user == null){
+            log.info("user must to login,{}",user);
             return "redirect:/";
         }
         //根据通知id和user查询通知DTO
