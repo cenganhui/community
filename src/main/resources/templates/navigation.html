@@ -52,7 +52,10 @@
                     </li>
                     <!--若没有用户信息，则显示登陆-->
                     <li th:if="${session.user == null}">
-                        <a href="https://github.com/login/oauth/authorize?client_id=81388564db4884cddfe9&redirect_uri=http://localhost:8887/callback&scope=user&state=1">
+<!--                        <a href="https://github.com/login/oauth/authorize?client_id=81388564db4884cddfe9&redirect_uri=http://localhost:8887/callback&scope=user&state=1">-->
+<!--                            登录-->
+<!--                        </a>-->
+                        <a th:href="@{https://github.com/login/oauth/authorize(client_id='81388564db4884cddfe9',redirect_uri=${#httpServletRequest.getRequestURL()+'callback'},scope='user',state='1')}">
                             登录
                         </a>
                     </li>
