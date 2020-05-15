@@ -18,6 +18,20 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <db.url>jdbc:h2:~/community</db.url>
+                <db.user>cgh</db.user>
+                <db.password>123</db.password>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -100,9 +114,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>6.4.0</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/community</url>
-                    <user>community</user>
-                    <password>nishi213</password>
+                    <url>${db.url}</url>
+                    <user>${db.user}</user>
+                    <password>${db.password}</password>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -39,7 +39,7 @@ function comment2target(targetId,type,content) {
                     var isAccepted = confirm(result.message);
                     //跳转登录，登录后关闭登录页面
                     if(isAccepted){
-                        window.open("https://github.com/login/oauth/authorize?client_id=81388564db4884cddfe9&redirect_uri=http://localhost:8887/callback&scope=user&state=1");
+                        window.open("https://github.com/login/oauth/authorize?client_id=81388564db4884cddfe9&redirect_uri=http://47.115.148.227:8887/callback&scope=user&state=1");
                         window.localStorage.setItem("closable",true);
                     }
                 }
