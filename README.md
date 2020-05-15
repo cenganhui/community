@@ -40,3 +40,4 @@ mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 - mvn compile package
 
 - java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar
+- mvn clean compile flyway:migrate
