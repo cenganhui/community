@@ -31,12 +31,11 @@
                     <input type="text" class="form-control" id="title" th:value="${title}" name="title" placeholder="问题标题...">
                 </div>
 <!--                问题描述编辑-->
+                <label for="description">问题补充（必填，请参照右侧提示）：</label>
                 <div class="form-group" id="question-editor">
 <!--                    回显-->
-                    <label for="description">问题补充（必填，请参照右侧提示）：</label>
-                    <textarea name="description" id="description" style="display:none;"
-                              th:text="${description}"
-                              class="form-control" cols="30" rows="10">
+                    <textarea name="description" id="description"
+                              style="display:none;" th:text="${description}">
                     </textarea>
                 </div>
 
@@ -82,7 +81,7 @@
                                      th:each="selectCategory : ${tags}"
                                      th:class="${selectCategoryStat.first ? 'tab-pane active' : 'tab-pane'}">
                                     <span class="label label-info" th:each="selectTag : ${selectCategory.tags}">
-                                        <span class="glyphicon glyphicon-tags" onclick="selectTag(this)"
+                                        <span class="glyphicon glyphicon-tags my-tag" onclick="selectTag(this)"
                                               th:data-tag="${selectTag}"
                                               th:text="${' ' + selectTag}">
                                         </span>
@@ -102,7 +101,7 @@
                             <div class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${error}" th:if="${error != null}">
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0">
                             <button type="submit" class="btn btn-success btn-publish pull-right">发布</button>
                         </div>
                     </div>
@@ -112,10 +111,14 @@
         </div>
 <!--        右边部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3>问题发起指南</h3>
-            * 问题标题：请用精简的语言描述您发布的问题，不超过25字 <br>
-            * 问题补充：详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关的资料 <br>
-            * 选择标签：选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10字 <br>
+            <div style="margin-top: 30px">
+                <h3>问题发起指南</h3>
+                <h5 style="margin-top: 20px">· 问题标题：请用精简的语言描述您发布的问题，不超过25字。</h5>
+                <h5 style="margin-top: 20px">· 问题补充：详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关的资料。</h5>
+                <h5 style="margin-top: 20px">· 选择标签：选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10字。</h5>
+            </div>
+
+
         </div>
     </div>
 </div>

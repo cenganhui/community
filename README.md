@@ -1,4 +1,4 @@
-## 牛奶糖社区
+## Akuma的问答社区
 
 ## 资料
 - **Spring文档**：https://spring.io/guides
@@ -11,6 +11,7 @@
 - **mvn repository**：https://mvnrepository.com/
 - **moment**：http://momentjs.cn/
 - **Editor.md**：https://github.com/pandao/editor.md
+- **maven settings.xml**：http://maven.apache.org/settings.html
 
 ## 工具
 - **Git**：https://git-scm.com/download
@@ -38,6 +39,7 @@ mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 - yum install maven
 - mvn -v
 - mvn compile package
-
-- java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar
 - mvn clean compile flyway:migrate
+- mvn clean compile flyway:migrate -Pproduction
+- mvn package
+- java -jar -Dspring.profiles.active=production target/community-0.0.1-SNAPSHOT.jar

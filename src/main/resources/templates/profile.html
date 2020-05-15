@@ -25,15 +25,15 @@
                 <!--        循环显示问题-->
                 <div class="media" th:each="question : ${paginationDTO.data}">
                     <div class="media-left">
-                        <a href="#">
+                        <a>
                             <img class="media-object img-rounded" th:src="${question.user.avatarUrl}">
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading">
+                        <h3 class="media-heading">
                             <a th:href="@{'/question/' + ${question.id}}" th:text="${question.title}"></a>
-                        </h4>
-                        <span th:text="${question.description}"></span> <br>
+                        </h3>
+                        <span th:text="${question.description}" style="font-size: 16px"></span> <br>
                         <span class="text-desc">
                             <span th:text="${question.commentCount}"></span> 个恢复 *
                             <span th:text="${question.viewCount}"></span> 次浏览 *
@@ -106,11 +106,13 @@
         </div>
 <!--        右边部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <div class="list-group section">
-                <a href="/profile/questions" th:class="${section == 'questions'} ? 'list-group-item active' : 'list-group-item'">我的问题</a>
-                <a href="/profile/replies" th:class="${section == 'replies'} ? 'list-group-item active' : 'list-group-item'">
+            <div class="list-group section" style="margin-top: 50px">
+                <a href="/profile/questions" style="height: 50px;font-size: 20px"
+                   th:class="${section == 'questions'} ? 'list-group-item active' : 'list-group-item'">我的问题</a>
+                <a href="/profile/replies" style="height: 50px;font-size: 20px"
+                   th:class="${section == 'replies'} ? 'list-group-item active' : 'list-group-item'">
                     最新回复
-                    <span class="badge" th:text="${session.unreadCount}"></span>
+                    <span class="badge" style="font-size: 20px" th:text="${session.unreadCount}"></span>
                 </a>
             </div>
         </div>

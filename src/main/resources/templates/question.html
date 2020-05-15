@@ -125,19 +125,18 @@
             </div>
 
 <!--回复输入-->
-<!--            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
             <div id="comment_section" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="media">
                     <div class="media-left">
-                        <a href="#">
+                        <a>
                             <img class="media-object img-rounded"
                                  th:src="${session.user != null ? session.user.avatarUrl : '/images/default-avatar.png'}">
                         </a>
                     </div>
                     <div class="media-body">
-                        <h5 class="media-heading">
+                        <h4 class="media-heading">
                             <span th:text="${session.user != null ? session.user.name : '游客'}"></span>
-                        </h5>
+                        </h4>
                     </div>
                 </div>
                 <input type="hidden" id="question_id" th:value="${questionDTO.id}">
@@ -150,42 +149,55 @@
 <!--        右边部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <h3>发起人</h3>
-
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object img-rounded" th:src="${questionDTO.user.avatarUrl}">
-                        </a>
+                <div class="panel panel-primary my-div">
+                    <div class="panel-heading">
+                        <h3>发起人</h3>
                     </div>
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                            <span th:text="${questionDTO.user.name}"></span>
-                        </h5>
+                    <div class="panel-body">
+                        <div class="media">
+                            <div class="media-left">
+                                <a>
+                                    <img class="media-object img-rounded" th:src="${questionDTO.user.avatarUrl}">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    <span th:text="${questionDTO.user.name}"></span>
+                                </h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
-
-            <hr class="col-md-12 col-sm-12 col-xs-12">
 <!--            站长的博客-->
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <h3>站长的博客</h3>
-                <ul class="question-related">
-                    <li>
-                        <a href="https://cenganhui.github.io/">https://cenganhui.github.io/</a>
-                    </li>
-                </ul>
+                <div class="panel panel-primary my-div">
+                    <div class="panel-heading">
+                        <h3>站长的博客</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="question-related">
+                            <li>
+                                <a href="https://cenganhui.github.io/">https://cenganhui.github.io/</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <hr class="col-md-12 col-sm-12 col-xs-12">
 <!--            相关问题-->
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <h3>相关问题</h3>
-                <ul class="question-related">
-                    <li th:each="related : ${relatedQuestionDTOList}">
-                        <a th:href="@{'/question/' + ${related.id}}" th:text="${related.title}"></a>
-                    </li>
-                </ul>
+                <div class="panel panel-primary my-div">
+                    <div class="panel-heading">
+                        <h3>相关问题</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="question-related">
+                            <li th:each="related : ${relatedQuestionDTOList}">
+                                <a th:href="@{'/question/' + ${related.id}}" th:text="${related.title}"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
