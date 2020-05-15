@@ -41,7 +41,7 @@ public class FileController {
         }
         fileDTO.setSuccess(1);
         fileDTO.setMessage("ok");
-        fileDTO.setUrl("http://47.115.148.227:8201/image/ro2.png");
+        fileDTO.setUrl(url);
 
         return fileDTO;
     }

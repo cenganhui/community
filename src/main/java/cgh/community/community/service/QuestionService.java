@@ -52,7 +52,6 @@ public class QuestionService {
         Integer totalPage;
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
-        System.out.println("*-*-*-*-*-*--*-*-*-******-*-*-*-"+search);
         Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);    //获得问题总数
 
         if(totalCount % size == 0){

@@ -11,9 +11,9 @@ import java.io.File;
  */
 public class ImgSave {
     // 设置文件存放路径
-    private static final String SaveFilePath = "D:/testImg";
+    private static final String SaveFilePath = "/home/www/image";
     // 设置静态文件服务器的ip:端口
-    private static final String Host = "D:/testImg";
+    private static final String Host = "http://47.115.148.227:8201/image";
 
     /**
      * 保存文件
