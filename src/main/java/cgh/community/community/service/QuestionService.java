@@ -69,7 +69,7 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage,page);  //计算出分页问题DTO内的属性
 
         //计算页面偏移，根据偏移和分页数量查询出当前分页的问题list
-        Integer offset = size * (page -1);
+        Integer offset = page < 1 ? 0 : size * (page -1);
 
         questionQueryDTO.setPage(offset);
         questionQueryDTO.setSize(size);
