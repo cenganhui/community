@@ -33,7 +33,6 @@
 <!--                问题描述编辑-->
                 <label for="description">问题补充（必填，请参照右侧提示）：</label>
                 <div class="form-group" id="question-editor">
-<!--                    回显-->
                     <textarea name="description" id="description"
                               style="display:none;" th:text="${description}">
                     </textarea>
@@ -54,13 +53,12 @@
                         });
                     });
                 </script>
-
+<!--                添加标签-->
                 <div class="form-group">
-<!--                    回显-->
+
                     <label for="tag">添加标签：</label>
                     <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" onclick="showSelectTag()" autocomplete="off" placeholder="输入标签（以，隔开）">
                     <div>
-
 <!--                        标签框-->
                         <div id="select-tag" class="publish-tag-tab">
 <!--                            便签分类名称列表-->
@@ -90,17 +88,17 @@
                             </div>
 
                         </div>
-
                     </div>
                 </div>
 
                 <div class="container-fluid">
                     <div class="row">
-                        <!--显示错误-->
+<!--                        显示错误-->
                         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                             <div class="alert alert-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${error}" th:if="${error != null}">
                             </div>
                         </div>
+<!--                        发布按钮-->
                         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="padding-right: 0">
                             <button type="submit" class="btn btn-success btn-publish pull-right">发布</button>
                         </div>

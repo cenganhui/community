@@ -35,12 +35,14 @@ public class QuestionService {
     private UserMapper userMapper;
 
     /**
-     * 查询所有问题及用户，返回分页问题DTO
+     * 根据搜索内容和标签查询所有问题及用户，返回分页问题DTO
+     * @param search    搜索内容
+     * @param tag   标签
      * @param page  当前页号
      * @param size  分页数量
      * @return
      */
-    public PaginationDTO list(String search, Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag, Integer page, Integer size) {
         //分割搜索字符串
         if(StringUtils.isNoneBlank(search)){
 
@@ -52,6 +54,8 @@ public class QuestionService {
         Integer totalPage;
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
+        questionQueryDTO.setTag(tag);
+
         Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);    //获得问题总数
 
         if(totalCount % size == 0){
