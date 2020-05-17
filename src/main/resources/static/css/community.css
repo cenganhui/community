@@ -88,3 +88,10 @@ body{
     padding-left: 0;
     padding-right: 0;
 }
+
+.video{
+    padding: 30px;
+}
+.video img{
+    width: 100%;
+}

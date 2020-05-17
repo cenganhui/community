@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <title>视频详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/jquery-3.5.0.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+
+<body>
+<!--引入导航-->
+<div th:insert="~{navigation :: nav}"></div>
+
+<!--问题列表-->
+<div class="container-fluid main">
+    <div class="row">
+<!--        左边部分-->
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+
+            <h4>视频选集</h4>
+            <ul>
+                <li>
+                    <a th:href="@{/video(page=1,aid=${aid})}">P1 开篇介绍</a>
+                </li>
+                <li>
+                    <a th:href="@{/video(page=2,aid=${aid})}">P2 快速搭建 Spring Boot 项目</a>
+                </li>
+            </ul>
+
+        </div>
+<!--        右边部分-->
+        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 30px">
+                <iframe th:src="@{//player.bilibili.com/player.html(aid=${aid},page=${page})}"
+                        style="width: 100%;min-height: 700px"
+                        scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
+
+                </iframe>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--引入页尾-->
+<div th:insert="~{footer :: foot}"></div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+    <title>视频</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.preview.css">
+    <script src="/js/jquery-3.5.0.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/moment.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js" type="application/javascript"></script>
+    <script src="/js/lib/prettify.min.js" type="application/javascript"></script>
+</head>
+<body>
+<!--引入导航-->
+<div th:insert="~{navigation :: nav}"></div>
+
+<div class="container-fluid main">
+    <div class="row">
+
+        <div class="col-lg-4 col-sm-12 col-xs-12 video">
+            <a href="/video/av50200264">
+                <img src="/images/cloud.jpg" alt="">
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-sm-12 col-xs-12 video">
+            <a href="/video/av50200264">
+                <img src="/images/cloud.jpg" alt="">
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-sm-12 col-xs-12 video">
+            <a href="/video/av50200264">
+                <img src="/images/cloud.jpg" alt="">
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<!--引入页尾-->
+<div th:insert="~{footer :: foot}"></div>
+</body>
+</html>
