@@ -24,6 +24,7 @@ mvn flyway:migrate
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 
 git checkout -b dev
+git branch
 ```
 
 ## 部署

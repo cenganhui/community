@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+ * 视频接口
  * @author Akuma
  * @date 2020/5/17 11:16
  */
